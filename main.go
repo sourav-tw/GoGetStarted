@@ -13,9 +13,10 @@ func main() {
 	conn_string := os.Getenv("CONNECTION_STRING")
 
 	router := gin.Default()
-	db := db.Init(conn_string)
-
-	books.RegisterRoutes(router, db)
+	go func() {
+		db := db.Init(conn_string)
+		books.RegisterRoutes(router, db)
+	}()
 
 	router.Run(":" + port)
 }
